@@ -5,7 +5,26 @@ const http = require("http");
 const requestListener = (request, response) => {
   response.setHeader("Content-Type", "text/html");
   response.statusCode = 200;
-  response.end("<h1>Hallo Http Server!</h1>");
+
+  // * destructure method from request
+  const { method } = request;
+
+  // * validation response
+  if (method === "GET") {
+    response.end("<h1>Helo!</h1>");
+  }
+
+  if (method === "POST") {
+    response.end("<h1>Hai!</h1>");
+  }
+
+  if (method === "PUT") {
+    response.end("<h1>Bonjour!</h1>");
+  }
+
+  if (method === "DELETE") {
+    response.end("<h1>Salam!</h1>");
+  }
 };
 
 // * create server
