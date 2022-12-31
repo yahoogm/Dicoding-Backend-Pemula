@@ -7,23 +7,35 @@ const requestListener = (request, response) => {
   response.statusCode = 200;
 
   // * destructure method from request
-  const { method } = request;
+  const { method, url } = request;
 
-  // * validation response
-  if (method === "GET") {
-    response.end("<h1>Helo!</h1>");
-  }
+  // validation url & output
+  if (url === "/") {
+    if (method === "GET") {
+      response.end("<h1>Ini adalah homepage</h1>");
+    } else {
+      response.end(`<h1>Halaman tidak dapat diakses dengan ${method} request</h1>`);
+    }
+  } else if (url === "/about") {
+    if (method === "GET") {
+      response.end("<h1>Hallo, ini adalah halaman about</h1>");
+    } else if (method === "POST") {
+      let body = [];
 
-  if (method === "POST") {
-    response.end("<h1>Hai!</h1>");
-  }
+      request.on("data", (chunk) => {
+        body.push(chunk);
+      });
 
-  if (method === "PUT") {
-    response.end("<h1>Bonjour!</h1>");
-  }
-
-  if (method === "DELETE") {
-    response.end("<h1>Salam!</h1>");
+      request.on("end", () => {
+        body = Buffer.concat(body).toString();
+        const { name } = JSON.parse(body);
+        response.end(`<h1>Halo, ${name}! Ini adalah halaman about</h1>`);
+      });
+    } else {
+      response.end("<h1>Halaman tidak dapat diakses menggunakan ${method} request</h1>");
+    }
+  } else {
+    response.end("<h1>Halaman tidak ditemukan</h1>");
   }
 };
 
