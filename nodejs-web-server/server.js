@@ -3,7 +3,8 @@ const http = require("http");
 
 // * function to listen the request and make response
 const requestListener = (request, response) => {
-  response.setHeader("Content-Type", "text/html");
+  response.setHeader("Content-Type", "application/json");
+  response.setHeader("X-Powered-By", "NodeJS");
 
   // * destructure method from request
   const { method, url } = request;
